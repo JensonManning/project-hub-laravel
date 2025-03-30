@@ -14,6 +14,11 @@ const mainNavItems: NavItem[] = [
         href: '/dashboard',
         icon: LayoutGrid,
     },
+    {
+        title: 'Tasks',
+        href: '/tasks',
+        icon: SquareCheckBig,
+    },
 ];
 
 const projectNavItems: NavItem[] = [

@@ -4,6 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Role;
@@ -54,9 +56,17 @@ class User extends Authenticatable
     /**
      * Get the role that owns the user.
      */
-    public function role()
+    public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);
+    }
+
+    /**
+     * Get all project resources assigned to the user.
+     */
+    public function projectResources(): HasMany
+    {
+        return $this->hasMany('App\Models\ProjectResource', 'user_id');
     }
 
     /**

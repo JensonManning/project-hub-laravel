@@ -12,14 +12,16 @@ use App\Http\Controllers\Repo\ResourceRepoController;
 use App\Http\Controllers\Repo\TaskRepoController;
 use App\Http\Controllers\Repo\TaskTypeRepoController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TaskController;
 
 Route::get('/', function () {
     return Inertia::render('landing/Landing');
 })->name('home');
 
-Route::get('dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified', 'approved'])->name('dashboard');
+Route::get('dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified', 'approved'])
+    ->name('dashboard');
 
 Route::middleware(['auth', 'verified', 'approved'])->group(function () {
     // Management routes
@@ -108,11 +110,17 @@ Route::middleware(['auth', 'verified', 'approved'])->group(function () {
 
 // Project routes
 Route::middleware(['auth', 'verified', 'approved'])->group(function () {
-    Route::get('projects/manage', [ProjectController::class, 'index'])->name('project.index');
-    Route::post('projects', [ProjectController::class, 'store'])->name('project.store');
-    Route::get('projects/{project}', [ProjectController::class, 'show'])->name('project.show');
-    Route::put('projects/{project}', [ProjectController::class, 'update'])->name('project.update');
-    Route::delete('projects/{project}', [ProjectController::class, 'destroy'])->name('project.destroy');
+    Route::get('projects/manage', [ProjectController::class, 'index'])->name('projects.index');
+    Route::post('projects', [ProjectController::class, 'store'])->name('projects.store');
+    Route::get('projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
+    Route::put('projects/{project}', [ProjectController::class, 'update'])->name('projects.update');
+    Route::delete('projects/{project}', [ProjectController::class, 'destroy'])->name('projects.destroy');
+});
+
+// Task routes
+Route::middleware(['auth', 'verified', 'approved'])->group(function () {
+    Route::get('tasks', [TaskController::class, 'index'])->name('tasks.index');
+    Route::put('tasks/{task}/complete', [TaskController::class, 'markCompleted'])->name('tasks.complete');
 });
 
 require __DIR__.'/settings.php';

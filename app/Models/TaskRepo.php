@@ -43,10 +43,26 @@ class TaskRepo extends Model
     }
 
     /**
+     * Get the resource that this task is assigned to.
+     */
+    public function resource(): BelongsTo
+    {
+        return $this->belongsTo(ResourceRepo::class, 'resource_repo_id');
+    }
+
+    /**
      * Get the subtasks for this task.
      */
     public function subtasks(): HasMany
     {
         return $this->hasMany(SubTaskRepo::class, 'task_repo_id');
+    }
+
+    /**
+     * Get the project-specific instances of this task.
+     */
+    public function projectTasks(): HasMany
+    {
+        return $this->hasMany(ProjectPhaseTask::class, 'task_repo_id');
     }
 }
