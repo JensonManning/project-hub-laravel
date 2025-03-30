@@ -206,6 +206,17 @@ const submitDelete = () => {
         });
     }
 };
+
+const validateShortcode = (form: any) => {
+    const shortcode = form.shortcode;
+    if (!shortcode) return;
+    const regex = /^[A-Z]{4}\d{2}[A-Z]$/;
+    if (!regex.test(shortcode)) {
+        form.errors.shortcode = 'Invalid shortcode format. Please use 4 letters + 2 numbers + 1 letter (e.g. PROJ01A)';
+    } else {
+        form.errors.shortcode = null;
+    }
+};
 </script>
 
 <template>
@@ -242,7 +253,20 @@ const submitDelete = () => {
                                     </div>
                                     <div class="grid gap-2">
                                         <Label for="create-shortcode">Shortcode</Label>
-                                        <Input id="create-shortcode" v-model="createForm.shortcode" required maxlength="10" placeholder="e.g. PRJ001" />
+                                        <div class="relative">
+                                            <Input 
+                                                id="create-shortcode" 
+                                                v-model="createForm.shortcode" 
+                                                required 
+                                                maxlength="7" 
+                                                placeholder="e.g. PROJ01A" 
+                                                class="uppercase"
+                                                @input="validateShortcode(createForm)"
+                                            />
+                                            <div class="text-xs text-muted-foreground mt-1">
+                                                Format: 4 letters + 2 numbers + 1 letter (e.g. PROJ01A)
+                                            </div>
+                                        </div>
                                         <div v-if="createForm.errors.shortcode" class="text-red-500 text-sm">
                                             {{ createForm.errors.shortcode }}
                                         </div>
@@ -385,7 +409,20 @@ const submitDelete = () => {
                                 </div>
                                 <div class="grid gap-2">
                                     <Label for="edit-shortcode">Shortcode</Label>
-                                    <Input id="edit-shortcode" v-model="editForm.shortcode" required maxlength="10" placeholder="e.g. PRJ001" />
+                                    <div class="relative">
+                                        <Input 
+                                            id="edit-shortcode" 
+                                            v-model="editForm.shortcode" 
+                                            required 
+                                            maxlength="7" 
+                                            placeholder="e.g. PROJ01A" 
+                                            class="uppercase"
+                                            @input="validateShortcode(editForm)"
+                                        />
+                                        <div class="text-xs text-muted-foreground mt-1">
+                                            Format: 4 letters + 2 numbers + 1 letter (e.g. PROJ01A)
+                                        </div>
+                                    </div>
                                     <div v-if="editForm.errors.shortcode" class="text-red-500 text-sm">
                                         {{ editForm.errors.shortcode }}
                                     </div>

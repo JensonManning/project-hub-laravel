@@ -29,7 +29,13 @@ class ProjectController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'shortcode' => 'required|string|max:10|unique:projects',
+            'shortcode' => [
+                'required',
+                'string',
+                'max:7',
+                'unique:projects',
+                'regex:/^[A-Za-z]{4}[0-9]{2}[A-Za-z]{1}$/'
+            ],
             'start_date' => 'required|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'description' => 'nullable|string',
@@ -61,8 +67,9 @@ class ProjectController extends Controller
             'shortcode' => [
                 'required',
                 'string',
-                'max:10',
+                'max:7',
                 Rule::unique('projects')->ignore($project->id),
+                'regex:/^[A-Za-z]{4}[0-9]{2}[A-Za-z]{1}$/'
             ],
             'start_date' => 'required|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
