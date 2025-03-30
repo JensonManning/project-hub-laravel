@@ -14,6 +14,7 @@ use App\Http\Controllers\Repo\TaskTypeRepoController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\MessageController;
 
 Route::get('/', function () {
     return Inertia::render('landing/Landing');
@@ -111,10 +112,20 @@ Route::middleware(['auth', 'verified', 'approved'])->group(function () {
 // Project routes
 Route::middleware(['auth', 'verified', 'approved'])->group(function () {
     Route::get('projects/manage', [ProjectController::class, 'index'])->name('projects.index');
+    Route::get('projects/active', [ProjectController::class, 'getActiveProjects'])->name('projects.active');
+    Route::get('projects/search', [ProjectController::class, 'searchProjects'])->name('projects.search');
     Route::post('projects', [ProjectController::class, 'store'])->name('projects.store');
     Route::get('projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
     Route::put('projects/{project}', [ProjectController::class, 'update'])->name('projects.update');
     Route::delete('projects/{project}', [ProjectController::class, 'destroy'])->name('projects.destroy');
+    
+    // Project Messages routes
+    Route::get('projects/{project}/messages', [MessageController::class, 'index'])->name('projects.messages.index');
+    Route::get('projects/{project}/messages/create', [MessageController::class, 'create'])->name('projects.messages.create');
+    Route::post('projects/{project}/messages', [MessageController::class, 'store'])->name('projects.messages.store');
+    Route::get('projects/{project}/messages/{message}', [MessageController::class, 'show'])->name('projects.messages.show');
+    Route::post('projects/{project}/messages/{message}/reply', [MessageController::class, 'reply'])->name('projects.messages.reply');
+    Route::post('projects/{project}/messages/{message}/quick-reply', [MessageController::class, 'quickReply'])->name('projects.messages.quick-reply');
 });
 
 // Task routes

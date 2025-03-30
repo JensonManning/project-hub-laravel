@@ -16,6 +16,7 @@ use Inertia\Inertia;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
 {
@@ -259,5 +260,48 @@ class ProjectController extends Controller
         $project->delete();
 
         return redirect()->route('projects.index')->with('success', 'Project deleted successfully.');
+    }
+
+    /**
+     * Get active projects for the current user.
+     */
+    public function getActiveProjects()
+    {
+        $user = Auth::user();
+        
+        // Get active projects where the user is a resource
+        $activeProjects = Project::where('status', 'active')
+            ->whereHas('resources', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })
+            ->select('id', 'name', 'shortcode')
+            ->orderBy('name')
+            ->get();
+            
+        return response()->json($activeProjects);
+    }
+
+    /**
+     * Search for projects by name or shortcode.
+     */
+    public function searchProjects(Request $request)
+    {
+        $query = $request->input('query');
+        
+        if (empty($query)) {
+            return response()->json([]);
+        }
+        
+        // Search for projects
+        $projects = Project::where(function ($q) use ($query) {
+                $q->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($query) . '%'])
+                  ->orWhereRaw('LOWER(shortcode) LIKE ?', ['%' . strtolower($query) . '%']);
+            })
+            ->select('id', 'name', 'shortcode', 'status')
+            ->orderBy('name')
+            ->limit(10)
+            ->get();
+            
+        return response()->json($projects);
     }
 }

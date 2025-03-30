@@ -66,4 +66,12 @@ class Project extends Model
     {
         return $this->hasMany(ProjectPhaseTask::class);
     }
+    
+    /**
+     * Get the messages for this project.
+     */
+    public function messages(): HasMany
+    {
+        return $this->hasMany(Message::class);
+    }
 }

@@ -6,9 +6,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Role;
+use App\Models\Message;
 
 class User extends Authenticatable
 {
@@ -91,5 +93,31 @@ class User extends Authenticatable
     public function isRejected(): bool
     {
         return $this->approval_status === 'rejected';
+    }
+    
+    /**
+     * Get the messages sent by the user.
+     */
+    public function sentMessages(): HasMany
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+    
+    /**
+     * Get the messages received by the user.
+     */
+    public function receivedMessages()
+    {
+        return $this->belongsToMany(Message::class, 'message_recipients')
+            ->withPivot('read', 'read_at')
+            ->withTimestamps();
+    }
+    
+    /**
+     * Get unread messages for the user.
+     */
+    public function unreadMessages()
+    {
+        return $this->receivedMessages()->wherePivot('read', false);
     }
 }

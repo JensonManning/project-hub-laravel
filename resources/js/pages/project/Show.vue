@@ -11,7 +11,7 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Calendar, ArrowLeft, Zap, Clock, Book, Users, ListTodo, Info } from 'lucide-vue-next';
+import { Calendar, ArrowLeft, Zap, Clock, Book, Users, ListTodo, Info, MessageSquare } from 'lucide-vue-next';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { format, differenceInDays } from 'date-fns';
 import { Link } from '@inertiajs/vue3';
@@ -201,6 +201,14 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
                         <Book class="h-4 w-4 mr-1.5" />
                         Notebooks
                     </button>
+                    <button 
+                        @click="setActiveTab('messages')" 
+                        class="py-2 px-1 border-b-2 text-sm font-medium flex items-center whitespace-nowrap"
+                        :class="activeTab === 'messages' ? 'border-primary text-foreground' : 'border-transparent text-muted-foreground hover:text-foreground'"
+                    >
+                        <MessageSquare class="h-4 w-4 mr-1.5" />
+                        Messages
+                    </button>
                 </div>
             </div>
             
@@ -357,6 +365,32 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
                             <h3 class="text-lg font-medium">Resource Management</h3>
                             <p class="text-muted-foreground mt-1">Assign team members and manage resources for this project.</p>
                             <Button variant="outline" class="mt-4">Manage Resources</Button>
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
+            
+            <!-- Messages Tab -->
+            <div v-if="activeTab === 'messages'" class="space-y-6">
+                <Card class="glass-card backdrop-blur-sm">
+                    <CardHeader>
+                        <CardTitle class="text-xl text-primary">Project Messages</CardTitle>
+                        <CardDescription>Messages associated with this project</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <!-- Placeholder for messages -->
+                        <div class="bg-card/80 border border-border/50 rounded-lg p-6 shadow-sm flex flex-col items-center justify-center text-center">
+                            <Info class="h-12 w-12 text-muted-foreground mb-2" />
+                            <h3 class="text-lg font-medium">No Messages</h3>
+                            <p class="text-muted-foreground mt-1">This project doesn't have any messages yet.</p>
+                            <div class="flex space-x-4 mt-4">
+                                <Link :href="`/projects/${project.id}/messages`">
+                                    <Button variant="outline">View All Messages</Button>
+                                </Link>
+                                <Link :href="`/projects/${project.id}/messages/create`">
+                                    <Button>Send Message</Button>
+                                </Link>
+                            </div>
                         </div>
                     </CardContent>
                 </Card>
