@@ -409,21 +409,39 @@ const editorButtons = [
 
             <!-- View Dialog -->
             <Dialog v-model:open="isViewDialogOpen">
-                <DialogContent class="max-w-3xl">
+                <DialogContent class="max-w-4xl glass-card backdrop-blur-sm">
                     <DialogHeader>
-                        <DialogTitle>View Notebook</DialogTitle>
+                        <DialogTitle class="text-xl font-bold text-primary">View Notebook</DialogTitle>
                         <DialogDescription>
-                            View the notebook details.
+                            View the notebook details and content.
                         </DialogDescription>
                     </DialogHeader>
                     <div v-if="notebookToView" class="py-4">
-                        <h2 class="text-lg font-bold mb-2">Name: {{ notebookToView.name }}</h2>
-                        <p class="mb-2">Description: {{ notebookToView.description }}</p>
-                        <h2 class="text-lg font-bold mt-4">Content : </h2>
-                        <div class="mt-4" v-html="notebookToView.content"></div>
+                        <div class="flex flex-col gap-4">
+                            <div class="gradient-border rounded-lg p-4 bg-card/50">
+                                <h2 class="text-xl font-bold mb-2 text-foreground">{{ notebookToView.name }}</h2>
+                                <p class="text-muted-foreground">{{ notebookToView.description }}</p>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <div class="flex items-center gap-2 mb-4">
+                                    <h3 class="text-lg font-bold text-foreground">Content</h3>
+                                    <div class="bg-primary/10 text-primary text-xs font-medium px-2 py-1 rounded-full">
+                                        Notebook
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-card/80 border border-border/50 rounded-lg p-6 shadow-sm futuristic-glow">
+                                    <div 
+                                        class="prose prose-sm dark:prose-invert max-w-none prose-headings:text-primary prose-a:text-primary"
+                                        v-html="notebookToView.content"
+                                    ></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <DialogFooter>
-                        <Button type="button" variant="outline" @click="isViewDialogOpen = false">Close</Button>
+                        <Button type="button" variant="outline" @click="isViewDialogOpen = false" class="futuristic-glow">Close</Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>

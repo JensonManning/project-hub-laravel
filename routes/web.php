@@ -11,6 +11,7 @@ use App\Http\Controllers\Repo\PhaseRepoController;
 use App\Http\Controllers\Repo\ResourceRepoController;
 use App\Http\Controllers\Repo\TaskRepoController;
 use App\Http\Controllers\Repo\TaskTypeRepoController;
+use App\Http\Controllers\ProjectController;
 
 Route::get('/', function () {
     return Inertia::render('landing/Landing');
@@ -103,6 +104,15 @@ Route::middleware(['auth', 'verified', 'approved'])->group(function () {
         'update' => 'repo.tasks.update',
         'destroy' => 'repo.tasks.destroy',
     ]);
+});
+
+// Project routes
+Route::middleware(['auth', 'verified', 'approved'])->group(function () {
+    Route::get('projects/manage', [ProjectController::class, 'index'])->name('project.index');
+    Route::post('projects', [ProjectController::class, 'store'])->name('project.store');
+    Route::get('projects/{project}', [ProjectController::class, 'show'])->name('project.show');
+    Route::put('projects/{project}', [ProjectController::class, 'update'])->name('project.update');
+    Route::delete('projects/{project}', [ProjectController::class, 'destroy'])->name('project.destroy');
 });
 
 require __DIR__.'/settings.php';

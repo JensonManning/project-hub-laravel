@@ -625,46 +625,73 @@ const clearFilters = () => {
 
             <!-- View Dialog -->
             <Dialog v-model:open="isViewDialogOpen">
-                <DialogContent class="max-w-3xl">
+                <DialogContent class="max-w-4xl glass-card backdrop-blur-sm">
                     <DialogHeader>
-                        <DialogTitle>View Task</DialogTitle>
+                        <DialogTitle class="text-xl font-bold text-primary">View Task</DialogTitle>
                         <DialogDescription>
-                            View the task details.
+                            View the task details and subtasks.
                         </DialogDescription>
                     </DialogHeader>
                     <div v-if="taskToView" class="py-4">
-                        <h2 class="text-lg font-bold mb-2">Name: {{ taskToView.name }}</h2>
-                        <p class="mb-4">Description: {{ taskToView.description }}</p>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-                            <div>
-                                <h3 class="font-medium">Phase</h3>
-                                <p>{{ taskToView.phase ? taskToView.phase.name : getPhaseName(taskToView.phase_repo_id) }}</p>
+                        <div class="flex flex-col gap-4">
+                            <div class="gradient-border rounded-lg p-4 bg-card/50">
+                                <h2 class="text-xl font-bold mb-2 text-foreground">{{ taskToView.name }}</h2>
+                                <p class="text-muted-foreground">{{ taskToView.description }}</p>
                             </div>
-                            <div>
-                                <h3 class="font-medium">Category</h3>
-                                <p>{{ taskToView.category ? taskToView.category.name : getCategoryName(taskToView.category_repo_id) }}</p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-2">
+                                <div class="bg-secondary/50 rounded-lg p-3 hover:bg-secondary/80 transition-colors">
+                                    <h3 class="font-medium text-sm text-muted-foreground mb-1">Phase</h3>
+                                    <p class="font-semibold">{{ taskToView.phase ? taskToView.phase.name : getPhaseName(taskToView.phase_repo_id) }}</p>
+                                </div>
+                                <div class="bg-secondary/50 rounded-lg p-3 hover:bg-secondary/80 transition-colors">
+                                    <h3 class="font-medium text-sm text-muted-foreground mb-1">Category</h3>
+                                    <p class="font-semibold">{{ taskToView.category ? taskToView.category.name : getCategoryName(taskToView.category_repo_id) }}</p>
+                                </div>
+                                <div class="bg-secondary/50 rounded-lg p-3 hover:bg-secondary/80 transition-colors">
+                                    <h3 class="font-medium text-sm text-muted-foreground mb-1">Task Type</h3>
+                                    <p class="font-semibold">{{ taskToView.taskType ? taskToView.taskType.name : getTaskTypeName(taskToView.task_type_repo_id) }}</p>
+                                </div>
+                                <div class="bg-secondary/50 rounded-lg p-3 hover:bg-secondary/80 transition-colors">
+                                    <h3 class="font-medium text-sm text-muted-foreground mb-1">Resource</h3>
+                                    <p class="font-semibold">{{ taskToView.resource ? taskToView.resource.name : getResourceName(taskToView.resource_repo_id) }}</p>
+                                </div>
                             </div>
-                            <div>
-                                <h3 class="font-medium">Task Type</h3>
-                                <p>{{ taskToView.taskType ? taskToView.taskType.name : getTaskTypeName(taskToView.task_type_repo_id) }}</p>
+                            
+                            <div v-if="taskToView.has_subtasks && taskToView.subtasks && taskToView.subtasks.length > 0" class="mt-4">
+                                <div class="flex items-center gap-2 mb-4">
+                                    <h3 class="text-lg font-bold text-foreground">Subtasks</h3>
+                                    <div class="bg-primary/10 text-primary text-xs font-medium px-2 py-1 rounded-full">
+                                        {{ taskToView.subtasks.length }} {{ taskToView.subtasks.length === 1 ? 'subtask' : 'subtasks' }}
+                                    </div>
+                                </div>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div 
+                                        v-for="(subtask, index) in taskToView.subtasks" 
+                                        :key="subtask.id || index" 
+                                        class="futuristic-glow bg-card/80 border border-border/50 rounded-lg p-4 hover:border-primary/30 transition-all duration-200"
+                                    >
+                                        <div class="flex items-start gap-3">
+                                            <div class="flex-shrink-0 w-6 h-6 bg-primary/10 text-primary rounded-full flex items-center justify-center mt-1">
+                                                {{ index + 1 }}
+                                            </div>
+                                            <div class="flex-1">
+                                                <h4 class="font-semibold text-foreground mb-2">{{ subtask.name }}</h4>
+                                                <p class="text-muted-foreground text-sm">{{ subtask.description }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <h3 class="font-medium">Resource</h3>
-                                <p>{{ taskToView.resource ? taskToView.resource.name : getResourceName(taskToView.resource_repo_id) }}</p>
-                            </div>
-                        </div>
-                        
-                        <div v-if="taskToView.has_subtasks && taskToView.subtasks && taskToView.subtasks.length > 0" class="mt-6">
-                            <h3 class="text-lg font-medium mb-3">Subtasks</h3>
-                            <div v-for="(subtask, index) in taskToView.subtasks" :key="subtask.id || index" class="border border-gray-200 rounded-md p-3 mb-3">
-                                <h4 class="font-medium mb-1">{{ subtask.name }}</h4>
-                                <p>{{ subtask.description }}</p>
+                            
+                            <div v-else class="mt-4 text-center p-6 bg-muted/30 rounded-lg border border-border/50">
+                                <p class="text-muted-foreground">This task has no subtasks.</p>
                             </div>
                         </div>
                     </div>
                     <DialogFooter>
-                        <Button type="button" variant="outline" @click="isViewDialogOpen = false">Close</Button>
+                        <Button type="button" variant="outline" @click="isViewDialogOpen = false" class="futuristic-glow">Close</Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>

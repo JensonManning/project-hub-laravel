@@ -7,6 +7,7 @@ defineProps<{
     items: NavItem[];
     managementItems: NavItem[];
     repoItems: NavItem[];
+    projectItems: NavItem[];
 }>();
 
 const page = usePage<SharedData>();
@@ -17,6 +18,20 @@ const page = usePage<SharedData>();
         <SidebarGroupLabel>Primary</SidebarGroupLabel>
         <SidebarMenu>
             <SidebarMenuItem v-for="item in items" :key="item.title">
+                <SidebarMenuButton 
+                    as-child :is-active="item.href === page.url"
+                    :tooltip="item.title"
+                >
+                    <Link :href="item.href">
+                        <component :is="item.icon" />
+                        <span>{{ item.title }}</span>
+                    </Link>
+                </SidebarMenuButton>
+            </SidebarMenuItem>
+        </SidebarMenu>
+        <SidebarGroupLabel>Projects</SidebarGroupLabel>
+        <SidebarMenu>
+            <SidebarMenuItem v-for="item in projectItems" :key="item.title">
                 <SidebarMenuButton 
                     as-child :is-active="item.href === page.url"
                     :tooltip="item.title"

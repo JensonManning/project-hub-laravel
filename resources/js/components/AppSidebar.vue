@@ -5,7 +5,7 @@ import NavUser from '@/components/NavUser.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid, FastForward, NotebookText, UsersRound, ShieldCheck, SquareCheckBig, SquareStack } from 'lucide-vue-next';
+import { BookOpen, Folder, LayoutGrid, FastForward, NotebookText, UsersRound, ShieldCheck, SquareCheckBig, SquareStack, Zap, FilePlus } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
 const mainNavItems: NavItem[] = [
@@ -13,6 +13,14 @@ const mainNavItems: NavItem[] = [
         title: 'Dashboard',
         href: '/dashboard',
         icon: LayoutGrid,
+    },
+];
+
+const projectNavItems: NavItem[] = [
+    {
+        title: 'Manage Projects',
+        href: '/projects/manage',
+        icon: Zap,
     },
 ];
 
@@ -96,7 +104,7 @@ const footerNavItems: NavItem[] = [
         </SidebarHeader>
 
         <SidebarContent class="scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent hover:scrollbar-thumb-primary/30">
-            <NavMain :items="mainNavItems" :management-items="managementNavItems" :repo-items="repoNavItems" />
+            <NavMain :items="mainNavItems" :management-items="managementNavItems" :repo-items="repoNavItems" :project-items="projectNavItems" />
         </SidebarContent>
 
         <SidebarFooter class="border-t border-sidebar-border/50 bg-sidebar-accent/30">
