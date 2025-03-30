@@ -18,9 +18,9 @@ Route::get('/', function () {
 
 Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified', 'approved'])->name('dashboard');
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'approved'])->group(function () {
     // Management routes
     Route::resource('management/roles', RoleManagementController::class)->names([
         'index' => 'management.roles',
@@ -51,7 +51,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 // Repo routes
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'approved'])->group(function () {
     Route::resource('repo/phases', PhaseRepoController::class)->names([
         'index' => 'repo.phases',
         'store' => 'repo.phases.store',
@@ -60,7 +60,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     ]);
 });
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'approved'])->group(function () {
     Route::resource('repo/notebooks', NotebookRepoController::class)->names([
         'index' => 'repo.notebooks',
         'store' => 'repo.notebooks.store',
@@ -69,7 +69,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     ]);
 });
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'approved'])->group(function () {
     Route::resource('repo/resources', ResourceRepoController::class)->names([
         'index' => 'repo.resources',
         'store' => 'repo.resources.store',
@@ -78,7 +78,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     ]);
 });
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'approved'])->group(function () {
     Route::resource('repo/categories', CategoryRepoController::class)->names([
         'index' => 'repo.categories',
         'store' => 'repo.categories.store',
@@ -87,7 +87,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     ]);
 });
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'approved'])->group(function () {
     Route::resource('repo/task-types', TaskTypeRepoController::class)->names([
         'index' => 'repo.task-types',
         'store' => 'repo.task-types.store',
@@ -96,7 +96,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     ]);
 });
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'approved'])->group(function () {
     Route::resource('repo/tasks', TaskRepoController::class)->names([
         'index' => 'repo.tasks',
         'store' => 'repo.tasks.store',

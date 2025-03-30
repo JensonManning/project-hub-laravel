@@ -15,20 +15,25 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Run the role seeder first
+        $this->call(RoleSeeder::class);
+        
+        // Get the User role ID
+        $userRoleId = Role::where('name', 'User')->first()->id;
+        $adminRoleId = Role::where('name', 'Admin')->first()->id;
 
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
             'password' => Hash::make('password'),
-            'role_id' => 2,
+            'role_id' => $userRoleId,
         ]);
 
         User::factory()->create([
             'name' => 'Jenson',
             'email' => 'jensonmanningpro@gmail.com',
             'password' => Hash::make('password'),
-            'role_id' => 1,
+            'role_id' => $adminRoleId,
         ]);
     }
 }
