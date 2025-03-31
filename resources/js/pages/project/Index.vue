@@ -474,7 +474,7 @@ const submitCreate = () => {
         return;
     }
     
-    createForm.post(route('project.store'), {
+    createForm.post(route('projects.store'), {
         onSuccess: () => {
             isCreateDialogOpen.value = false;
             createForm.reset();
