@@ -301,7 +301,7 @@ const editorButtons = [
                                                 <span class="material-icons text-sm">{{ button.icon }}</span>
                                             </button>
                                         </div>
-                                        <EditorContent :editor="createEditor" class="p-3 min-h-[200px]" />
+                                        <EditorContent :editor="createEditor" class="p-3 min-h-[200px] max-h-[400px] overflow-y-auto" />
                                     </div>
                                     <div v-if="createForm.errors.content" class="text-red-500 text-sm">
                                         {{ createForm.errors.content }}
@@ -392,7 +392,7 @@ const editorButtons = [
                                             <span class="material-icons text-sm">{{ button.icon }}</span>
                                         </button>
                                     </div>
-                                    <EditorContent :editor="editEditor" class="p-3 min-h-[200px]" />
+                                    <EditorContent :editor="editEditor" class="p-3 min-h-[200px] max-h-[400px] overflow-y-auto" />
                                 </div>
                                 <div v-if="editForm.errors.content" class="text-red-500 text-sm">
                                     {{ editForm.errors.content }}
