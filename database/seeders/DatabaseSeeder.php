@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
             'password' => Hash::make('password'),
             'role_id' => $userRoleId,
+            'approval_status' => 'approved',
         ]);
 
         User::factory()->create([
